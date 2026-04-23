@@ -1,11 +1,3 @@
-| Русский  | Английский | Греческий           |
-|----------|------------|---------------------|
-| Евгений  | Eugene     | Εὐγένιος (Eugenios) |
-| Евгения  | Evgenia    | Εὐγενία (Eugenia)   |
-| Евгеника | Eugenics   | Εὐγενική (Eugenikē) |
-| Евгениос | Evgenios   | Εὐγένιος (Eugenios) |
-| Женя     | Zhenya     | Ζένια (Zenia)       |
-
 ### Summary of Discussion (English Translation)
 
 We explored the concept of **Deviation** ($\Delta$) in the context of vector spaces, moving from simple linear
