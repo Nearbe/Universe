@@ -1,35 +1,28 @@
-# Whisper.cpp — Математический анализ и сравнение с Eugenia Solenoid
+# Математический Анализ whisper.cpp и Сравнение с Eugenia Solenoid
 
-**Дата анализа:** 2026-04-23
-**Агент:** u-system-math
-**Источник whisper.cpp:** `/Users/nearbe/Eugenia/whisper.cpp/`
+## Аннотация
+Настоящий отчет содержит анализ форматов хранения весов и методов квантования в проекте `whisper.cpp`. Проводится сравнительный анализ с архитектурой Solenoid (проект «Евгения») в контексте эффективности сжатия и математической глубины представления данных.
 
----
+## 1. Форматы Представления и Хранения Весов
 
-## 1. Как whisper.cpp представляет и хранит веса
+### Структура файла: Унаследованный GGML
+В отличие от современных реализаций `llama.cpp`, использующих формат GGUF, `whisper.cpp` опирается на классический бинарный формат GGML (версия 2).
 
-### Формат: кастомный GGML (НЕ GGUF)
+**Схема компоновки файла:**
+- **Magic:** `0x67676d6c` ("ggml")
+- **Гиперпараметры:** 10 × `int32`
+- **Мел-фильтры:** `n_mel × n_fft × float32`
+- **Словарь:** Массив строк
+- **Тензоры:** Набор структур [размерность, длина, тип, форма, имя, данные].
 
-whisper.cpp использует **старый собственный бинарный формат GGML** (magic `0x67676d6c` = "ggml", version 2), а не современный GGUF.
+### Методы квантования
+`whisper.cpp` поддерживает ограниченный набор форматов квантования, не включая современные K-quant варианты:
 
-```
-File layout whisper.cpp:
-[4B: magic] [hparams: 10×int32] [mel_filters: n_mel×n_fft×float32] [vocab: string array] [tensors...]
-
-Каждый тензор:
-  [n_dims: int32] [length: int32] [ttype: int32] [ne[0..3]] [name:string] [data: binary]
-```
-
-**GGUF** (llama.cpp) — ключ-значение пара + тензорный blob, типизированный и extensible. whisper.cpp **не использует GGUF**.
-
-### Квантование: только Q4_0 и Q5_0
-
-| Формат | bpw | Блок | Масштаб | Bias |
-|--------|-----|------|---------|------|
-| Q4_0 | 2.5 | 32 | 1× `d` (half) | нет |
-| Q5_0 | 3.125 | 32 | 1× `d` (half) | 5-й бит `qh[4]` |
-
-**НЕ поддерживает K-quant форматы** (Q2_K — Q8_K) из llama.cpp. Скрипт `quantize-all.sh` генерирует только `q5_0` и `q5_1`.
+| Формат | Битов на вес (bpw) | Размер блока | Масштаб | Особенности |
+|--------|--------------------|--------------|---------|-------------|
+| Q4_0 | 2.5 | 32 | Одиночный (float16) | Симметричное |
+| Q5_0 | 3.125 | 32 | Одиночный (float16) | 5-й бит в `qh[4]` |
+| Q8_0 | 8.5 | 32 | Одиночный (float32) | Для кодировщика |
 
 ### Размер сжатия (из README whisper.cpp)
 
@@ -41,56 +34,23 @@ File layout whisper.cpp:
 
 ---
 
-## 2. Математическая основа сжатия в whisper.cpp
+## 2. Математическая Основа Сжатия
 
-### Формулы квантования
+### Модели квантования
+Квантование в `whisper.cpp` является линейным и одноуровневым:
+$$x_{recon} = Q(x) \cdot \operatorname{scale}(x).$$
 
-**Q4_0** (симметричная, zero-centered):
-```
-Для блока из QK4_0=32 элементов:
-  amax = max(|x[i]|)
-  d = amax / (-8)                          // delta
-  qs[j] = clip(x[j] / d + 8, 0, 15)       // unsigned 4-bit
-  x_recon[j] = (qs[j] - 8) × d             // dequant: [-8, 7] × d
-```
+**Алгоритм Q4_0 (Симметричный):**
+Для блока из 32 элементов:
+1. Вычисление максимальной амплитуды: $a_{max} = \max(|x_i|)$.
+2. Определение дельты: $d = a_{max} / (-8)$.
+3. Квантование: $q_j = \operatorname{clip}(x_j / d + 8, 0, 15)$.
+4. Реконструкция: $x_{recon, j} = (q_j - 8) \cdot d$.
 
-**Q4_1** (асимметричная, с bias):
-```
-  min = min(x), max = max(x)
-  d = (max - min) / 15
-  m = min
-  x_recon[j] = qs[j] × d + m              // qs ∈ [0, 15]
-```
-
-**Q5_0** (расширение Q4_0 до 5 бит):
-```
-  d = max / (-16)
-  qs[4-bit] + qh[5th-bit] → [-16, 15]
-  x_recon[j] = qs_full[j] × d
-```
-
-**Q8_0** (8-bit):
-```
-  d = max / (-128)
-  qs[signed 8-bit] → [-128, 127]
-  x_recon[j] = qs[j] × d
-```
-
-### Математическая природа
-
-**Линейная одноуровневая квантизация:**
-```
-x_recon = Q(x) × scale(x)
-  scale(x) = max(|x|) / 8       ← global scale для всего блока
-  Q: ℝ → {-8, -7, ..., 7}       ← uniform quantizer (16 уровней)
-```
-
-**Критическое отличие Q4_0 от Q4_1:** Q4_0 использует `amax / (-8)` (симметричная), Q4_1 использует `(max-min) / 15` (асимметричная с bias).
-
-### Максимальная ошибка
-
-Для Q4_0: `error_max = scale / 2 = max(|x|) / 16`
-Для равномерного распределения в [-1, 1]: ~1.56% относительная ошибка.
+**Оценка погрешности:**
+Для формата Q4_0 максимальная ошибка составляет:
+$$\epsilon_{max} = \frac{scale}{2} = \frac{\max(|x|)}{16}.$$
+Для равномерного распределения в диапазоне $[-1, 1]$ это соответствует относительной ошибке $\approx 1.56\%$.
 
 ### Нет bias correction в whisper.cpp
 
@@ -284,7 +244,7 @@ W = Dⁿ(Hⁿ(W))    // lossless representation
 
 3. **Нет non-linear reconstruction:** GGML `x_recon = scale × Q + bias` — строго линейная. Residual от линейной реконструкции часто имеет нелинейную структуру (хвосты, выбросы). Solenoid `Dⁿ(zₙ)` — нелинейный по природе.
 
-4. **Нет hybrid SVD + quant:** llama.cpp идеи из `LLAMA_CPP_SOLENOID_IDEAS.md` описывают hybrid approach: низкоранговое ядро SVD + residual квантизация. whisper.cpp — только прямое квантование.
+4. **Нет hybrid SVD + quant:** llama.cpp идеи из `../architecture/llama_solenoid_ideas.md` описывают hybrid approach: низкоранговое ядро SVD + residual квантизация. whisper.cpp — только прямое квантование.
 
 5. **Старый GGML формат:** Не использует GGUF. Нет KV-pair metadata, нет extensibility, нет стандартизации. llama.cpp GGUF — современный стандарт.
 
@@ -331,7 +291,7 @@ def solenoid_quantize_whisper(W, target_bpw=3.0):
     
     P0: Multi-scale (из llama.cpp Q4_K)
     P1: Importance-weighted (из llama.cpp AWQ)
-    P2: Hybrid SVD + Solenoid (из LLAMA_CPP_SOLENOID_IDEAS.md)
+    P2: Hybrid SVD + Solenoid (из ../architecture/llama_solenoid_ideas.md)
     """
     # Step 1: Determine sensitivity per layer
     sensitivity = compute_layer_sensitivity(W)
@@ -378,7 +338,7 @@ def importance_weighted_solenoid(W, svd_singular_values):
 ```python
 def hybrid_svd_solenoid(W, k=32):
     """
-    P2: Hybrid SVD + Solenoid (из LLAMA_CPP_SOLENOID_IDEAS.md).
+    P2: Hybrid SVD + Solenoid (из ../architecture/llama_solenoid_ideas.md).
     
     Pipeline:
     1. SVD: W ≈ Uₖ × Σₖ × Vₖᵀ          (низкоранговое ядро)
@@ -410,8 +370,8 @@ def hybrid_svd_solenoid(W, k=32):
 
 ## Связанные документы
 
-- `COMPRESSION_SUMMARY.md` — фрактальный компрессор весов + Solenoid Lossless Storage
-- `EUGENIA_ARCHITECTURE.md` — архитектура интеграции
-- `LLAMA_CPP_SOLENOID_IDEAS.md` — идеи из llama.cpp для улучшения Solenoid
-- `NUCLEUS_ROADMAP.md` — детальный план развития Nucleus
-- `UNIVERSAL_KNOWLEDGE.md` — Universal Knowledge Protocol
+- `../analytic/compression_summary.md` — фрактальный компрессор весов + Solenoid Lossless Storage
+- `../architecture/eugenia_architecture.md` — архитектура интеграции
+- `../architecture/llama_solenoid_ideas.md` — идеи из llama.cpp для улучшения Solenoid
+- `../architecture/roadmap_nucleus.md` — детальный план развития Nucleus
+- `../theory/universal_knowledge.md` — Universal Knowledge Protocol

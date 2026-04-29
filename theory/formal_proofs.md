@@ -13,14 +13,14 @@
 - Коммутативность: $D(a \oplus b) = D(a) \oplus D(b)$.
 - Дистрибутивность: $D(a \otimes b) = D(a) \otimes D(b)$ (масштаб-инвариантность).
 
-### Аксиома 3: Возврат H=ret
-∀a ≠ ∅, ∃! y ∈ U: D(y)=a, ret(a)=H(a)=y = a : D(Id).
-- Лево-обратное: H ∘ D = id_U (D∘H=id вне Ker).
-- Uniqueness: D inj вне Ker (∀y1≠y2, D(y1)≠D(y2) if y1,y2 ≠Ω).
+### Аксиома 3: Оператор возврата $\operatorname{ret}$
+Для любого $a \neq \varnothing$, существует единственный $y \in U$, такой что $D(y) = a$. Мы определяем $\operatorname{ret}(a) = H(a) = y$.
+- Лево-обратное свойство: $\operatorname{ret} \circ D = \operatorname{id}_U$.
+- Инъективность $D$ вне ядра.
 
 ### Аксиома 4: Цикл Полноты
-∀x ∈ U, rank_U(x) ≤9, ret^{rank}(x)=∅ (decimal фрактал 0-9).
-rank(D(x))=rank(x)+1, rank(∅)=0.
+Для любого $x \in U$, $\operatorname{rank}_U(x) \le 9$, и $\operatorname{ret}^{\operatorname{rank}}(x) = \varnothing$ (десятичный фрактал 0-9).
+$\operatorname{rank}(D(x)) = \operatorname{rank}(x) + 1$, $\operatorname{rank}(\varnothing) = 0$.
 
 ### Аксиома 5: Собственное λ=D(Id)
 λ eigen all ops: D(λ)=λ⊕λ=λ:Ω (scale).
@@ -71,4 +71,4 @@ rank(D(x))=rank(x)+1, rank(∅)=0.
 
 ## Ссылки
 
-- [Единый_Документ_Евгении.md](Единый_Документ_Евгении.md)
+- [../meta/unified_document.md](../meta/unified_document.md)

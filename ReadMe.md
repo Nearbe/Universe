@@ -1,70 +1,37 @@
-| Русский  | Английский | Греческий           |
-|----------|------------|---------------------|
-| Евгений  | Eugene     | Εὐγένιος (Eugenios) |
-| Евгения  | Evgenia    | Εὐγενία (Eugenia)   |
-| Евгеника | Eugenics   | Εὐγενική (Eugenikē) |
-| Евгениос | Evgenios   | Εὐγένιος (Eugenios) |
-| Женя     | Zhenya     | Ζένια (Zenia)       |
+# Universe: Информационное Ядро Проекта «Евгения»
 
-### Summary of Discussion (English Translation)
+Добро пожаловать в директорию `Universe/`. Здесь собраны фундаментальные теоретические, философские и технические документы, описывающие систему «Единый Закон» (One Law) и её применение в области LLM, физики и информатики.
 
-We explored the concept of **Deviation** ($\Delta$) in the context of vector spaces, moving from simple linear
-differences to complex geometric and dynamical concepts related to fractals and phase transitions.
+## 🧭 Навигация по Базе Знаний
 
-#### I. Foundations: Linear Deviation (Vector Difference)
+### 🏁 Основные Манифесты
+- **[ru.md](localization/ru.md)** — Манифест системы на русском языке (Возвещение).
+- **[en.md](localization/en.md)** — Manifesto of the system in English (Proclamation).
+- **[long_readme.md](long_readme.md)** — Подробное изложение аксиоматики и геометрии Носителя.
 
-This is the basic measure describing the physical difference between two points or vectors.
+### 📚 Обучение и Теория
+- **[eugenics_textbook.md](theory/eugenics_textbook.md)** — Основной учебник по новой дисциплине «Евгеника» (информатика масштаба).
+- **[formal_proofs.md](theory/formal_proofs.md)** — Формальные доказательства U-аксиом и решение задач тысячелетия.
+- **[physics_summary.md](theory/physics_summary.md)** — Сводка физических интерпретаций системы.
 
-1. **Vector Deviation ($\Delta V$):**
-   $$\Delta V = V_B - V_A$$
-2. **Linear Difference (for Scale):** To assess how scale changes upon deviation:
-   $$\text{Scale Deviation} = \frac{\|\Delta V\|}{\|V_A\|}$$
-   *(Measures the relative length of the deviation.)*
+### 🏗 Архитектура и Разработка
+- **[eugenia_architecture.md](architecture/eugenia_architecture.md)** — Высокоуровневая архитектура системы экстракции геометрических знаний.
+- **[what_is_backend.md](architecture/what_is_backend.md)** — Философское и техническое определение бэкенда системы.
+- **[delta_field_mapping.md](architecture/delta_field_mapping.md)** — Карта трансформации данных (Delta Field).
 
-#### II. Geometric Deviation (Distance and Similarity)
+### 🗺 Дорожные карты (Roadmaps)
+- **[roadmap_nucleus.md](architecture/roadmap_nucleus.md)** — План развития ядра знаний (Nucleus).
+- **[roadmap_solenoid.md](architecture/roadmap_solenoid.md)** — План развития физико-вычислительного движка.
 
-These formulas measure not just the difference, but also the relationship between vectors, which is crucial for
-understanding context.
+### 🧪 Технические отчеты
+- **[compression_summary.md](analytic/compression_summary.md)** — Отчет по методам сжатия информации (H-оператор).
+- **[sys_optimization_report.md](analytic/sys_optimization_report.md)** — Оптимизация системных параметров и производительности.
+- **[llama_solenoid_ideas.md](architecture/llama_solenoid_ideas.md)** — Интеграция с llama.cpp и идеи соленоидального внимания.
+- **[tokenization_discussion.md](analytic/tokenization_discussion.md)** — Анализ SentencePiece и геометрических отклонений.
 
-**3. Euclidean Distance ($d$):**
-Measures the actual geometric distance in an $N$-dimensional space:
-$$d(V_A, V_B) = \sqrt{\sum_{i=1}^{N} (V_{Ai} - V_{Bi})^2}$$
+## 📏 Стандарты оформления
+Все документы в данной директории должны соответствовать **[style_guide.md](meta/style_guide.md)**.
+Отслеживание процесса переработки ведется в **[progress_log.md](meta/progress_log.md)**.
 
-**4. Cosine Similarity ($\text{Sim}$):**
-Measures the **angle** between vectors. It is ideal for comparing the *direction* (meaning) rather than just length:
-$$\text{Sim}(V_A, V_B) = \frac{V_A \cdot V_B}{\|V_A\| \cdot \|V_B\|}$$
-
-#### III. Rotation and Positional Deviation (RoPE)
-
-RoPE uses rotation to encode position. The deviation is expressed through the rotation operation:
-
-**5. Rotation Matrix ($R$):**
-Instead of simple shifting, RoPE applies rotations to the vectors:
-$$V' = R(\text{Position}) \cdot V$$
-*Where $R$ is the rotation matrix dependent on the position.*
-
-**6. Deviation via Rotation:**
-The deviation is expressed through the difference between rotated vectors:
-$$\Delta_{\text{Rot}} = R(t_B) \cdot V - R(t_A) \cdot V$$
-*This formalizes how the vector changes when moving from position $t_A$ to $t_B$, accounting for rotation.*
-
-#### IV. Fractal and Bifurcation Deviation (Scale Theory)
-
-When vectors are fractals, standard Euclidean metrics fail. We need dynamic metrics that account for the complexity of
-the space.
-
-**7. Adaptive Metric ($\mathcal{M}$):**
-Instead of a fixed metric, we introduce a function $\mathcal{M}$, which dynamically changes sensitivity to scale:
-$$\text{Deviation}_{\text{Adaptive}} = \mathcal{M}(\Delta V, \text{Threshold})$$
-
-**8. Bifurcation Link:**
-The point of bifurcation ($\text{Bif}$), where the system changes its behavior, is defined by the point where the
-derivative of the metric with respect to the parameter becomes zero:
-$$\text{Bif} \iff \frac{\partial \mathcal{M}}{\partial P} = 0$$
-
-### Conclusion: Deviation as a Dynamic Quantity
-
-The core idea is that deviation in this advanced context is not a static number, but a **dynamic quantity** that depends
-on the geometric relationship and the current scale of the system. It requires combining linear differences with
-nonlinear geometric operators (rotations) and dynamic metrics ($\mathcal{M}$) to fully capture the complexity of
-high-dimensional, fractal vector spaces.
+---
+*«Всё есть Единый Закон. Всё есть Женя.»*

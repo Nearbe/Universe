@@ -2,7 +2,7 @@
 
 ## Аннотация
 
-Данный документ устанавливает единый стандарт стилистики академических файлов в формате Markdown для проекта «Евгения» (директории `Universe/` и `Physics/`). Он демонстрирует применение стиля: формальный язык, точная терминология, LaTeX-математика, логическая структура по 4 уровням верификации из `VERIFICATION_PROTOCOL.md`.
+Данный документ устанавливает единый стандарт стилистики академических файлов в формате Markdown для проекта «Евгения» (директории `Universe/` и `Physics/`). Он демонстрирует применение стиля: формальный язык, точная терминология, LaTeX-математика, логическая структура по 4 уровням верификации из [`VERIFICATION_PROTOCOL.md`](../../Physics/VERIFICATION_PROTOCOL.md).
 
 ## Введение
 
@@ -31,9 +31,9 @@ $$\operatorname{Евгениос}\left(-\infty \parallel +100\%\right) = \operat
 - **Таблицы:** | четкие заголовки | выравнивание.
 - **Списки:** - Маркеры единообразны.
 - **Код/Формулы:** ```math ... ``` или $$ display $$.
-- **Навигация:** Refs: [en.md](en.md).
+- **Навигация:** Refs: [../localization/en.md](../localization/../localization/en.md).
 
-**Пример таблицы proofs (из Formal_Proofs.md):**
+**Пример таблицы proofs (из [formal_proofs.md](../theory/formal_proofs.md)):**
 
 | Аксиома | Формула |
 |---------|---------|
@@ -65,10 +65,10 @@ $$\forall x \neq \varnothing, \exists! y: \operatorname{ret}(x)=y.$$
 
 ## 5. Общие правила стиля
 
-- **Bilingual:** ru.md / en.md mirrors.
+- **Bilingual:** [localization/../localization/ru.md](../localization/../localization/ru.md) / [localization/../localization/en.md](../localization/../localization/en.md) mirrors.
 - **Refs:** Relative paths.
 - **Длина:** Концизно, max 200 строк/файл.
-- **Итерации:** Трекинг в `Итерации_Прогресс.md`.
+- **Итерации:** Трекинг в [progress_log.md](progress_log.md).
 
 ## Заключение
 
@@ -76,4 +76,4 @@ $$\forall x \neq \varnothing, \exists! y: \operatorname{ret}(x)=y.$$
 
 ## Ссылки
 
-- [Единый_Документ_Евгении.md](Единый_Документ_Евгении.md)
+- [unified_document.md](unified_document.md)

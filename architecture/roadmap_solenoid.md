@@ -143,7 +143,7 @@ n_i = clip(importance_i × n_max / max(importance), n_min, n_max)
 
 ### P2: Hybrid SVD + Solenoid (самый большой потенциал)
 
-**Источник:** SVD compression (из COMPRESSION_SUMMARY.md) + Universal Knowledge Protocol
+**Источник:** SVD compression (из ../analytic/compression_summary.md) + Universal Knowledge Protocol
 
 **Идея:** Разложить веса через SVD, применить Solenoid только к residual. Core-часть хранится в low-rank формате.
 
@@ -304,7 +304,7 @@ P5 ─────────────────────────�
 
 **Почему:**
 - Надстройка над P0 —复用 multi-scale infrastructure
-- Direct применение SVD insights из COMPRESSION_SUMMARY.md
+- Direct применение SVD insights из ../analytic/compression_summary.md
 - Значительный буст к compression (6×)
 - Валидирует adaptive depth концепцию
 
@@ -491,12 +491,12 @@ Layer (i):
 
 ## I. Ссылки на источники
 
-1. **WHISPER_CPP_COMPARISON.md** — GGML квантование, lossless cycle, multi-scale
-2. **LLAMA_CPP_SOLENOID_IDEAS.md** — 5 идей: multi-scale, importance-weighted, hybrid SVD+K-quant, adaptive block size, non-linear
-3. **COMPRESSION_SUMMARY.md** — SVD k=4 (125x, 99% ошибка), k=8 (62x, 98% ошибка)
-4. **UNIVERSAL_KNOWLEDGE.md** — Universal Knowledge Protocol, P(d×k) + S(k)
-5. **EUGENIA_ARCHITECTURE.md** — архитектура, geometric extractor, Solenoid storage layer
-6. **NUCLEUS_ROADMAP.md** — текущий план, P0-P5 фазы
+1. **../analytic/whisper_comparison.md** — GGML квантование, lossless cycle, multi-scale
+2. **../architecture/llama_solenoid_ideas.md** — 5 идей: multi-scale, importance-weighted, hybrid SVD+K-quant, adaptive block size, non-linear
+3. **../analytic/compression_summary.md** — SVD k=4 (125x, 99% ошибка), k=8 (62x, 98% ошибка)
+4. **../theory/universal_knowledge.md** — Universal Knowledge Protocol, P(d×k) + S(k)
+5. **../architecture/eugenia_architecture.md** — архитектура, geometric extractor, Solenoid storage layer
+6. **../architecture/roadmap_nucleus.md** — текущий план, P0-P5 фазы
 
 ---
 

@@ -58,4 +58,4 @@ $$\text{Евгениос} \left( -\infty \parallel +100\% \right) = \text{Евг
 
 Евгеника решает Hilbert, Millennium, physics. arXiv-ready.
 
-Refs: [en.md](en.md), [Formal_Proofs.md](Formal_Proofs.md), [Universe_Physics_Summary.md](Universe_Physics_Summary.md).
+Refs: [../localization/en.md](../localization/en.md), [../theory/formal_proofs.md](../theory/formal_proofs.md), [../theory/physics_summary.md](../theory/physics_summary.md).

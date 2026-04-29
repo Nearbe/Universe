@@ -241,10 +241,10 @@ ret(x) = H(x) = x : D(Id), ∃! y: D(y)=x.
 | Иерархия заголовков | H1-H3 логическая | # H1 ## H2 |
 | LaTeX | $$ display, \operatorname | $$\operatorname{ret}(x)$$ |
 | Таблицы | Четкие | | Col | Col | |
-| Bilingual | ru/en mirrors | ru.md/en.md |
+| Bilingual | ru/en mirrors | ../localization/ru.md/../localization/en.md |
 | Длина | Max 200 стр | Концизно |
 
-Refs: [Стиль_Документов.md](Стиль_Документов.md)
+Refs: [style_guide.md](style_guide.md)
 
 ### 5.2 Протокол Верификации (10 уровней)
 
