@@ -260,7 +260,7 @@ Refs: [style_guide.md](style_guide.md)
 | Пунктуация | Корректно | Хорошо: `∀x ≠ ∅` |
 | Грамматика | Согласование | Хорошо: `единственный y` |
 
-Refs: [VERIFICATION_PROTOCOL.md](../Physics/VERIFICATION_PROTOCOL.md)
+Refs: [VERIFICATION_PROTOCOL.md](../../Physics/VERIFICATION_PROTOCOL.md)
 
 ---
 
